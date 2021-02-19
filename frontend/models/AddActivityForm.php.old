@@ -1,0 +1,48 @@
+<?php
+
+namespace frontend\models;
+
+use Yii;
+use yii\base\Model;
+use common\models\Activity;
+
+/**
+ * ActivityForm model
+ */
+class AddActivityForm extends Model
+{
+    public $activity;
+    public $type;
+    public $description;
+    public $image_path;
+//    public $user_id;
+//    public $categories;
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            // activity, type, description, image_path and categories are required
+            [['activity', 'type', 'description', 'image_path'], 'required']
+        ];
+    }
+
+    public function addActivity(){
+        if (!$this->validate()) {
+            return null;
+        }
+
+        $activity = new Activity();
+        $activity->activity = $this->activity;
+        $activity->type = $this->type;
+        $activity->description = $this->description;
+        $activity->image_path = $this->image_path;
+        $activity->user_id = Yii::$app->user->id;
+
+        return $activity->save();
+    }
+
+}
